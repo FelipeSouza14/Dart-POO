@@ -59,18 +59,15 @@ class MenuPrincipal extends StatelessWidget {
     return PopupMenuButton(itemBuilder: 
     (context) {
       return [
-        PopupMenuItem<int>(
-          value: 0,
+          PopupMenuItem(
           child: Text("Blue")
           ),
 
-          PopupMenuItem<int>(
-          value: 1,
+          PopupMenuItem(
           child: Text("Green")
           ),
 
-          PopupMenuItem<int>(
-          value: 2,
+          PopupMenuItem(
           child: Text("Purple")
           )
         ];
