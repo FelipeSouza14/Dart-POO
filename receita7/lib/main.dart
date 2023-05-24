@@ -27,7 +27,7 @@ class DataService {
   Future<void> carregarCafes(int? menuCount) async {
     var coffeesUri = Uri(
         scheme: 'https',
-        host: 'random-data-api.com/',
+        host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
         queryParameters: {'size': '$menuCount'});
 
