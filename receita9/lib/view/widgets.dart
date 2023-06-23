@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:receita9/data/data_service.dart';
+import '../data/data_service.dart';
 
 
 class MenuOptions {
