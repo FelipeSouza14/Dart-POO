@@ -13,7 +13,8 @@ enum ItemType {
 
   String get asString => '$name';
 
-  List<String> get columns => this == coffee
+  List<String> get columns => 
+  this == coffee
       ? ["Nome", "Origem", "Tipo"]
       : this == beer
           ? ["Nome", "Estilo", "IBU"]
@@ -21,7 +22,8 @@ enum ItemType {
               ? ["Nome", "Capital", "Idioma", "Esporte"]
               : [];
 
-  List<String> get properties => this == coffee
+  List<String> get properties => 
+  this == coffee
       ? ["blend_name", "origin", "variety"]
       : this == beer
           ? ["name", "style", "ibu"]
