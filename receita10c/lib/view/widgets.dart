@@ -8,7 +8,6 @@ class MenuOptions {
 }
 
 class MyApp extends StatelessWidget {
-  final loadMenuOptions = MenuOptions.menuOptions;
 
   @override
   Widget build(BuildContext context) {
@@ -16,20 +15,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Dicas"),
-            actions: [
-              PopupMenuButton(
-                itemBuilder: (_) => loadMenuOptions
-                    .map((num) => PopupMenuItem(
-                        value: num, child: Text("Carregar $num itens por vez")))
-                    .toList(),
-                onSelected: (number) {
-                  dataService.numberOfItems = number;
-                },
-              )
-            ],
-          ),
+
+          appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: MyAppBar()),
+
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
@@ -57,6 +47,8 @@ class MyApp extends StatelessWidget {
         ));
   }
 }
+
+
 
 class NewNavBar extends HookWidget {
   final _itemSelectedCallback;
@@ -104,7 +96,8 @@ class DataTableWidget extends StatelessWidget {
         child: DataTable(
             columns: columnNames
                 .map((name) => DataColumn(
-                  onSort: (columnIndex, ascending)=> dataService.ordenarEstadoAtual(propertyNames[columnIndex]),
+                    onSort: (columnIndex, ascending) => dataService
+                        .ordenarEstadoAtual(propertyNames[columnIndex]),
                     label: Expanded(
                         child: Text(name,
                             style: TextStyle(fontStyle: FontStyle.italic)))))
@@ -115,5 +108,68 @@ class DataTableWidget extends StatelessWidget {
                         .map((propName) => DataCell(Text(obj[propName])))
                         .toList()))
                 .toList()));
+  }
+}
+
+class MyAppBar extends HookWidget {
+  final loadMenuOptions = MenuOptions.menuOptions;
+  const MyAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var state = useState(7);
+
+    return AppBar(
+      title: Text("Dicas"),
+      actions: [
+        SearchBar(),
+        PopupMenuButton(
+          initialValue: state.value,
+          itemBuilder: (_) => loadMenuOptions
+            .map((num) => PopupMenuItem(
+                value: num,
+                child: Text("Carregar $num itens por vez"),
+              ))
+            .toList(),
+          onSelected: (number) {
+            state.value = number;
+            dataService.numberOfItems = number;
+          },
+        )
+      ]
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+            minWidth: 1.0,
+            maxWidth: 280.0,
+          ),
+      child: TextField(
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
+          hintText: 'Pesquisa',
+          hintStyle: TextStyle(color: Colors.white),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        ),
+        onChanged: (filter) {
+          if (filter.length >= 3) {
+            dataService.filtrarEstadoAtual(filter);
+          }
+          else {
+            dataService.filtrarEstadoAtual('');
+          }
+        },
+      ),
+    );
   }
 }
